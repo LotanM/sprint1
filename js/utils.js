@@ -1,4 +1,8 @@
 'use strict'
+var audio = new Audio("click.mp3");
+var minutesLabel = document.querySelector(".minutes");
+var secondsLabel = document.querySelector(".seconds");
+var gTotalSeconds = 0;
 
 
 function getRandomIntInclusive(min, max) {
@@ -10,12 +14,20 @@ function randomColor() {
   return '#' + randomColor
 }
 
-function timer() {
-  startTime = Date.now();
-  gInterval = setInterval(() => {
-    elapsedTime = Date.now() - startTime;
-    document.querySelector(".timer").innerHTML = (elapsedTime / 1000).toFixed(3);
-  }, 100);
+
+function setTime() {
+  ++gTotalSeconds;
+  secondsLabel.innerHTML = pad(gTotalSeconds % 60);
+  minutesLabel.innerHTML = pad(parseInt(gTotalSeconds / 60));
+}
+
+function pad(val) {
+  var valString = val + "";
+  if (valString.length < 2) {
+    return "0" + valString;
+  } else {
+    return valString;
+  }
 }
 
 function countMines(cellI, cellJ, mat) {
@@ -25,7 +37,7 @@ function countMines(cellI, cellJ, mat) {
     for (var j = cellJ - 1; j <= cellJ + 1; j++) {
       if (i === cellI && j === cellJ) continue;
       if (j < 0 || j >= mat[i].length) continue;
-      if (mat[i][j].element === MINE) minesAroundCount++;
+      if (mat[i][j].isMine) minesAroundCount++;
     }
   }
   return minesAroundCount
