@@ -1,5 +1,5 @@
 body {
-    background: #8abeb4;
+    background: #acced6;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: center;
 }
@@ -7,12 +7,20 @@ body {
 table {
     margin: 0 auto;
     border: 1px solid black;
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
 }
 
 td {
+    background-color: white;
     border: 1px solid black;
-    width: 30px;
-    height: 30px;
+    width: 15px;
+    height: 15px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+td:hover {
+    background-color: #acced6;
+    border: 1px solid white;
 }
