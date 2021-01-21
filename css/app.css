@@ -2,15 +2,20 @@ body {
     background: #5D6D7E;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: center;
+    background-image: linear-gradient(#263238, #546E7A);
+    background-attachment: fixed;
+    animation: fadein 2s;
 }
+
 h1 {
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     letter-spacing: 4px;
     color: white;
-    font-size: 50px;
+    font-size: 45px;
     transition: 1s;
-    cursor: default ;
+    cursor: default;
 }
+
 h1:hover {
     color: #ffbe46;
 }
@@ -25,11 +30,14 @@ td {
     border: 2px solid #B0BEC5;
     width: 40px;
     height: 40px;
+    min-width: 30px;
+    min-height: 30px;
     background-color: #B0BEC5;
     font-weight: bold;
     color: #546E7A;
     transition: 0.5s;
 }
+
 td:hover {
     text-align: center;
     background-color: #CFD8DC;
@@ -41,20 +49,21 @@ td:hover {
 }
 
 button {
-    border: 2px solid white;
     width: 100px;
     font-size: 15px;
     font-weight: bold;
     padding: 10px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 10px;
-    border-radius: 10px;
+    border-radius: 50px;
     outline: none;
     cursor: pointer;
+    transition: 0.5s;
 }
 
 button:hover {
-    background-color: white;
+    background-color: #263238;
+    color: white;
 }
 
 .timer {
@@ -65,7 +74,7 @@ button:hover {
     color: #D7CCC8;
     font-weight: bold;
     width: 10%;
-    min-width: 50px;
+    min-width: 70px;
     padding: 5px;
     margin: 0 auto;
 }
@@ -73,4 +82,3 @@ button:hover {
 .emoji {
     font-size: 40px;
 }
-

@@ -1,6 +1,6 @@
 'use strict'
-var clicked = new Audio("click.mp3");
-var flagged = new Audio("flagged.mp3");
+var clicked = new Audio("./audio/click.mp3");
+var flagged = new Audio("./audio/flagged.mp3");
 var minutesLabel = document.querySelector(".minutes");
 var secondsLabel = document.querySelector(".seconds");
 var gTotalSeconds = 0;
