@@ -11,16 +11,16 @@
 
   <body onload="initGame()">
     <h1>Mine Sweeper!</h1>
-    <button class="easy">easy</button>
-    <button class="medium">medium</button>
-    <button class="Hard">Hard</button>
+    <button class="easy" onclick="levelClicked(this)">Easy</button>
+    <button class="medium" onclick="levelClicked(this)">Medium</button>
+    <button class="hard" onclick="levelClicked(this)">Hard</button>
     <div class="timer">
       <span class="minutes">00</span>:<span class="seconds">00</span>
     </div>
     <div class="emoji">😇</div>
     <div class="board-container">
       <table>
-        <tbody class="board"></tbody>
+        <tbody class="board" onmousedown="mouseDown()" onmouseup="mouseUp()"></tbody>
       </table>
     </div>
     <script src="js/utils.js"></script>

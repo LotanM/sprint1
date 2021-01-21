@@ -2,9 +2,9 @@
 const MINE = '💥';
 const FLAG = '🏴';
 
+// clearInterval(gInterval); <<< to stop timer
 var gBoard;
 var gInterval;
-// clearInterval(gInterval); <<< to stop timer
 var timerClick = 1;
 var gLevel = {
     SIZE: 4,
@@ -18,14 +18,30 @@ var gGame = {
     secsPassed: 0
 }
 
+
+
+function levelClicked(elLvl) {
+    if (elLvl.innerText === 'Easy') {
+        gLevel = { SIZE: 4, MINES: 2 }
+        initGame()
+    }
+    if (elLvl.innerText === 'Medium') {
+        gLevel = { SIZE: 8, MINES: 12 }
+        initGame()
+    }
+    if (elLvl.innerText === 'Hard') {
+        gLevel = { SIZE: 12, MINES: 30 }
+        initGame()
+    }
+}
+
 function initGame() {
-    gBoard = buildBoard(4)
+    gGame.isOn = true;
+    gBoard = buildBoard(gLevel.SIZE)
     renderBoard(gBoard)
 }
 
-// Builds the board
-// Set mines at random locations
-// Call setMinesNegsCount() Return the created board
+
 function buildBoard(size) {
     var board = []
     for (var i = 0; i < size; i++) {
@@ -41,7 +57,6 @@ function buildBoard(size) {
     }
     setMinesAtRandomCell(board)
     setMinesNegsCount(board)
-    console.table(board);
     return board
 }
 
@@ -60,48 +75,9 @@ function setMinesAtRandomCell(board) {
 }
 
 
-
-// Render the board as a <table> to the page
-function renderBoard(board) {
-    var strHTML = '';
-    for (var i = 0; i < board.length; i++) {
-        strHTML += '<tr>';
-        for (var j = 0; j < board.length; j++) {
-            // var cell = board[i][j];
-            strHTML += `<td class="cell" oncontextmenu="cellMarked(this, ${i}, ${j}); return false;" onclick="cellClicked(this, ${i}, ${j})"></td>`
-        }
-        strHTML += '</tr>';
-    }
-    var elBoard = document.querySelector('.board');
-    elBoard.innerHTML = strHTML;
-}
-
-//Called when a cell (td) is clicked
-function cellClicked(elCell, i, j) {
-    var clickedCell = gBoard[i][j];
-    if (!clickedCell.isShown) {
-        if (!clickedCell.isMine) {
-            elCell.innerText = clickedCell.minesAroundCount; //neighbors count number
-            elCell.style.backgroundColor = '#CFD8DC';
-            clickedCell.isShown = true;
-        } else {
-            elCell.innerText = MINE;
-            checkGameOver()
-        }
-        audio.play();
-    }
-    if (timerClick === 1) { //start timer
-        gInterval = setInterval(setTime, 1000);
-        timerClick++
-    }
-    console.log(gBoard);
-}
-
-
-//Count mines around each cell and set the cell's minesAroundCount
 function setMinesNegsCount(board) {
-    for (var i = 0; i < board.length; i++) { //loop board
-        for (var j = 0; j < board.length; j++) { // loop board
+    for (var i = 0; i < board.length; i++) {
+        for (var j = 0; j < board.length; j++) {
             var currCell = board[i][j];
             var num = countMines(i, j, board);
             currCell.minesAroundCount = num
@@ -110,25 +86,104 @@ function setMinesNegsCount(board) {
     return num
 }
 
+function renderBoard(board) {
+    var strHTML = '';
+    for (var i = 0; i < board.length; i++) {
+        strHTML += '<tr>';
+        for (var j = 0; j < board.length; j++) {
+            // var cell = board[i][j];
+            var tdCell = `${i}-${j}`;
+            strHTML += `<td class="cell-${tdCell}"  oncontextmenu="cellMarked(this, ${i}, ${j}); return false;" onclick="cellClicked(this, ${i}, ${j})"></td>`
+        }
+        strHTML += '</tr>';
+    }
+    var elBoard = document.querySelector('.board');
+    elBoard.innerHTML = strHTML;
+}
 
-// Called on right click to mark a cell (suspected to be a mine)
-// Search the web (and implement) how to hide the context menu on right click
-function cellMarked(elCell, i, j) {
+function cellClicked(elCell, i, j) { //leftClicked
+    if (gGame.isOn) {
+        if (timerClick === 1) { //start timer
+            gInterval = setInterval(setTime, 1000);
+            timerClick++
+        }
+        var clickedCell = gBoard[i][j];
+        if (!clickedCell.isMine && !clickedCell.isShown) {
+            if (clickedCell.minesAroundCount === 0) clickedCell.innerText = '';
+            // expandShown(board, elCell, i, j);
+            clickedCell.isShown = true;
+            elCell.innerText = clickedCell.minesAroundCount;
+            gGame.shownCount++
+            elCell.style.backgroundColor = '#CFD8DC';
+            checkGameOver();
+        } else if (clickedCell.isMine) { //gameOver
+            revealeAllMines()
+            gGame.isOn = false;
+            clearInterval(gInterval);
+            gGame.secsPassed = gTotalSeconds;
+        }
+        clicked.play();
+    }
+}
+
+
+function revealeAllMines() {
+    var elEmoji = document.querySelector('.emoji')
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            var currCell = gBoard[i][j];
+            var currElCell = document.querySelector(`.cell-${i}-${j}`)
+            if (currCell.isMine) {
+                currCell.isShown = true;
+                currElCell.innerText = MINE;
+                gGame.isOn = false;
+                elEmoji.innerText = '☠️';
+            }
+        }
+    }
+}
+
+
+function cellMarked(elCell, i, j) { //right clicked
     elCell.addEventListener('contextmenu', function (ev) {
-        ev.preventDefault();
-    }, false)
-    elCell.innerText = FLAG;
-    if (elCell.innerText === FLAG) gBoard[i][j].isMarked = true;
-    if (gBoard[i][j].isMine) console.log('you flagged a bomb!');
-    console.log(gBoard);
+        ev.preventDefault(); //cancels menu
+    }, false);
+    if (gGame.isOn) {
+        if (timerClick === 1) { //start timer
+            gInterval = setInterval(setTime, 1000);
+            timerClick++
+        }
+        var clickedCell = gBoard[i][j]
+        if (clickedCell.isShown) {
+            return;
+        }
+        if (!clickedCell.isMarked) {
+            clickedCell.isMarked = true;
+            elCell.innerText = FLAG;
+        } else {
+            clickedCell.isMarked = false;
+            elCell.innerText = '';
+        }
+        if (clickedCell.isMine && clickedCell.isMarked) {
+            gGame.markedCount++;
+            checkGameOver();
+        } else if (clickedCell.isMine && !clickedCell.isMarked) gGame.markedCount--
+        flagged.play();
+    }
 }
 
-// Game ends when all mines are
-// marked, and all the other cells
-// are shown
+
 function checkGameOver() {
-    console.log('gameover?');
+    var cellsCount = (gLevel.SIZE ** 2) - gLevel.MINES;
+    if (gGame.markedCount === gLevel.MINES && gGame.shownCount === cellsCount) {
+        gGame.isOn = false;
+        clearInterval(gInterval);
+        gGame.secsPassed = gTotalSeconds;
+        var elEmoji = document.querySelector('.emoji')
+        elEmoji.innerText = '🎊🥳🎊';
+    }
 }
+
 
 
 
@@ -139,5 +194,5 @@ function checkGameOver() {
 // at the Bonuses section below)
 
 function expandShown(board, elCell, i, j) {
-    
+
 }

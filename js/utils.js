@@ -1,5 +1,6 @@
 'use strict'
-var audio = new Audio("click.mp3");
+var clicked = new Audio("click.mp3");
+var flagged = new Audio("flagged.mp3");
 var minutesLabel = document.querySelector(".minutes");
 var secondsLabel = document.querySelector(".seconds");
 var gTotalSeconds = 0;
@@ -7,11 +8,6 @@ var gTotalSeconds = 0;
 
 function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function randomColor() {
-  var randomColor = Math.floor(Math.random() * 16777215).toString(16);
-  return '#' + randomColor
 }
 
 
@@ -41,4 +37,17 @@ function countMines(cellI, cellJ, mat) {
     }
   }
   return minesAroundCount
+}
+
+function mouseDown() {
+  if (gGame.isOn) {
+    var elEmoji = document.querySelector('.emoji');
+    elEmoji.innerText = '😨';
+  }
+}
+function mouseUp() {
+  if (gGame.isOn) {
+    var elEmoji = document.querySelector('.emoji');
+    elEmoji.innerText = '😇';
+  }
 }
