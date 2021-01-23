@@ -9,15 +9,17 @@ body {
 
 h1 {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 0;
+    margin-bottom: 20px;
     letter-spacing: 4px;
     color: white;
-    font-size: 45px;
-    transition: 1s;
+    font-size: 50px;
+    transition: 0.2s;
     cursor: default;
 }
 
 h1:hover {
-    color: #ffbe46;
+    color: #ffd446;
 }
 
 table {
@@ -45,16 +47,23 @@ td:hover {
 }
 
 .board-container {
-    margin-top: 10px
+    margin-top: 10px;
+}
+
+.buttons {
+    margin: 10px 0 10px 0;
 }
 
 button {
+    border: none;
     width: 100px;
     font-size: 15px;
     font-weight: bold;
     padding: 10px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
     border-radius: 50px;
     outline: none;
     cursor: pointer;
@@ -64,21 +73,87 @@ button {
 button:hover {
     background-color: #263238;
     color: white;
+    box-shadow: inset 0px 0px 0px 4px #212121;
 }
 
-.timer {
+.timer, .score {
+    display: inline-block;
     letter-spacing: 3px;
     font-family: 'Orbitron', sans-serif;
-    border: 3px solid #263238;
+    border: 5px solid #263238;
     background-color: #212121;
     color: #D7CCC8;
     font-weight: bold;
     width: 10%;
     min-width: 70px;
-    padding: 5px;
+    padding: 8px;
     margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.score {
+    min-width: 290px;
+    width: 20%;
+}
+
+.emojis-container {
+    margin-bottom: 10px;
 }
 
 .emoji {
+    display: inline;
+    text-align: center;
     font-size: 40px;
+    margin: 0 60px 0 60px;
+}
+
+.lives {
+    display: inline-block;
+    font-size: 40px;
+}
+
+.hints {
+    display: inline;
+}
+
+.explode {
+    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+    transform: translate3d(0, 0, 0);
+}
+
+.hint {
+    display: inline-block;
+}
+
+.hint img {
+    height: 54px;
+    display: inline-block;
+}
+
+.hint:hover {
+    cursor: pointer;
+}
+
+.selected {
+    background: rgb(218, 204, 0);
+    background: radial-gradient(circle, rgba(218, 204, 0, 1) 0%, rgba(46, 43, 108, 0) 61%)
+}
+
+.no-hover {
+    pointer-events: none;
+}
+
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%, 80% {
+        transform: translate3d(2px, 0, 0);
+    }
+    30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+    40%, 60% {
+        transform: translate3d(4px, 0, 0);
+    }
 }
